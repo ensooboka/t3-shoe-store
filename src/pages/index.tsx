@@ -40,10 +40,10 @@ const Home: NextPage = () => {
           </div>
         </section>
         <div className="p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-8">
             {shoes.map(shoe => 
               <div key={shoe.id} className="p-4 rounded-md flex items-center justify-center">
-                <a className="h-full" href={`/sneakz/${shoe.styleColor}`}><img className="mx-auto rounded-lg max-w-xs h-full object-cover" src={shoe.image} alt="user avatar" loading="lazy" /></a>
+                <a className="h-full" href={`/sneakz/${shoe.styleColor}`}><img className="mx-auto rounded-lg max-w-sm lg:max-w-xs h-full object-cover" src={shoe.image} alt="user avatar" loading="lazy" /></a>
               </div>
             )}
           </div>

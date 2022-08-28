@@ -47,15 +47,15 @@ const ShoeDetail: NextPage = () => {
 
                         {/* <label htmlFor="large" className="block mb-2 text-base font-medium text-gray-900 dark:text-gray-400">Size</label> */}
                         <select id="large" className="block py-3 px-4 w-2/3 text-xl rounded-lg border border-black focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option defaultChecked={true}>Choose A Size</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
+                          <option defaultChecked={true}>Choose A Size</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
                         </select>
 
                     </div>
