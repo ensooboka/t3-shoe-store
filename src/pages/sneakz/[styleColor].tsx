@@ -6,10 +6,9 @@ import { useRouter } from 'next/router';
 const ShoeDetail: NextPage = () => {
   const router = useRouter();
   const { styleColor } = router.query;
-  const { data: shoe } = trpc.useQuery(["shoe.findShoe", { styleColor: styleColor as string }]);
+  const { data: shoe, isLoading } = trpc.useQuery(["shoe.findOne", { styleColor: styleColor as string }]);
 
-  // const {name } = shoe;
-  // if
+  if (isLoading || !shoe) return <div>Loading</div>
 
   return (
     <>
@@ -24,7 +23,7 @@ const ShoeDetail: NextPage = () => {
       <nav className="p-3 rounded border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div className="container flex flex-wrap place-content-around items-center mx-auto">
             <a href="#" className="flex items-center">
-                <span className="self-center text-xl font-semibold italic whitespace-nowrap dark:text-white">&quot;{shoe?.name}&quot;</span>
+                <span className="self-center text-xl font-semibold italic whitespace-nowrap dark:text-white">&quot;{shoe.name}&quot;</span>
             </a>
             <a href="#" className="flex items-center">
                 <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Shuez By Cody </span>
@@ -38,13 +37,13 @@ const ShoeDetail: NextPage = () => {
                 <div className="grid gap-8 md:grid-rows-2 lg:grid-cols-2">
                     <div className="row-span-2 rounded-xl text-center flex justify-center xl:justify-start">
                         <div className="h-full">
-                            <img className="mx-auto rounded-lg max-w-xs sm:max-w-md xl:max-w-xl" src={shoe?.image} alt="user avatar" loading="lazy" />
+                            <img className="mx-auto rounded-lg max-w-xs sm:max-w-md xl:max-w-xl" src={shoe.image} alt="user avatar" loading="lazy" />
                         </div>
                     </div>
 
                     <div className="p-6 border border-gray-200 rounded-xl flex justify-center items-center content-center flex-col">
                         
-                        <span className="text-2xl font-bold text-gray-900 dark:text-white p-4">${shoe?.price}</span>
+                        <span className="text-2xl font-bold text-gray-900 dark:text-white p-4">{`$${shoe.price}`}</span>
 
                         {/* <label htmlFor="large" className="block mb-2 text-base font-medium text-gray-900 dark:text-gray-400">Size</label> */}
                         <select id="large" className="block py-3 px-4 w-2/3 text-xl rounded-lg border border-black focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">

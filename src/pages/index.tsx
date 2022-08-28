@@ -1,11 +1,16 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
+import styles from '../styles/Home.module.css'
 
 
 
 const Home: NextPage = () => {
-  const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
+  const { data: shoes, isLoading } = trpc.useQuery(["shoe.findAll"]);
+
+  if(isLoading || !shoes) {
+    return <div>Loading...</div>
+  }
 
   return (
     <>
@@ -18,10 +23,7 @@ const Home: NextPage = () => {
       <main className="py-6 px-4 sm:p-6 md:py-10 md:px-8">
 
       <nav className="p-3 rounded border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-        <div className="container flex flex-wrap place-content-around items-center mx-auto">
-            <a href="#" className="flex items-center">
-                <span className="self-center text-xl font-semibold italic whitespace-nowrap dark:text-white">&quot;LightFoot 4&quot;</span>
-            </a>
+        <div className="container flex flex-wrap place-content-end items-center mx-auto">
             <a href="#" className="flex items-center">
                 <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Shuez By Cody </span>
                 <img src="https://flowbite.com/docs/images/logo.svg" className="pl-1 mr-3 h-6 sm:h-10" alt="Flowbite Logo" />
@@ -29,40 +31,23 @@ const Home: NextPage = () => {
             </div>
         </nav>
 
-        <div className="py-14 white">  
-            <div className="container m-auto text-gray-600">
-                <div className="grid gap-8 md:grid-rows-2 lg:grid-cols-2">
-                    <div className="row-span-2 rounded-xl text-center flex justify-center xl:justify-start">
-                        <div className="h-full">
-                            <img className="mx-auto rounded-lg max-w-xs sm:max-w-md xl:max-w-xl" src="https://ae01.alicdn.com/kf/HTB1s650PVXXXXbzXXXXq6xXFXXXq/Men-s-Denim-Shoes-2017-Breathable-High-Canvas-Shoes-Men-Shoes-Casual-Skate-Footwear-Zapatos-Hombre.jpg" alt="user avatar" loading="lazy" />
-                        </div>
-                    </div>
-
-                    <div className="p-6 border border-gray-200 rounded-xl flex justify-center items-center content-center flex-col">
-                        
-                        <span className="text-2xl font-bold text-gray-900 dark:text-white p-4">$ 99</span>
-
-                        {/* <label htmlFor="large" className="block mb-2 text-base font-medium text-gray-900 dark:text-gray-400">Size</label> */}
-                        <select id="large" className="block py-3 px-4 w-2/3 text-xl rounded-lg border border-black focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected>Choose A Size</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        </select>
-
-                    </div>
-                    <div className="p-6 border border-gray-200 rounded-xl flex sm:p-8 justify-center items-center content-center flex-col">
-                        <button type="button" className="w-1/3 text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-lg text-2xl px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buy</button>
-                    </div>
-                </div>
+        <section className="text-gray-600 body-font">
+          <div className="container rounded border border-gray-200 px-8 py-24 mx-auto">
+            <div className="flex flex-col text-center w-full mb-8">
+              <h2 className="text-sm text-blue-800 tracking-widest font-bold mb-1">FALL SHUE COLLECTION</h2>
+              <h1 className="text-3xl font-medium text-gray-600">tootzie popz</h1>
             </div>
+          </div>
+        </section>
+        <div className="p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-8">
+            {shoes.map(shoe => 
+              <div key={shoe.id} className="p-4 rounded-md flex items-center justify-center">
+                <a className="h-full" href={`/sneakz/${shoe.styleColor}`}><img className="mx-auto rounded-lg max-w-xs h-full object-cover" src={shoe.image} alt="user avatar" loading="lazy" /></a>
+              </div>
+            )}
+          </div>
         </div>
-
       </main>
     </>
   );
