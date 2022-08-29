@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../../utils/trpc";
 import { useRouter } from 'next/router';
+import Link from "next/link";
 
 const ShoeDetail: NextPage = () => {
   const router = useRouter();
@@ -22,13 +23,13 @@ const ShoeDetail: NextPage = () => {
 
       <nav className="p-3 rounded border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div className="container flex flex-wrap place-content-around items-center mx-auto">
-            <a href="#" className="flex items-center">
-                <span className="self-center text-xl font-semibold italic whitespace-nowrap dark:text-white">&quot;{shoe.name}&quot;</span>
-            </a>
-            <a href="#" className="flex items-center">
-                <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Shuez By Cody </span>
-                <img src="https://flowbite.com/docs/images/logo.svg" className="pl-1 mr-3 h-6 sm:h-10" alt="Flowbite Logo" />
-            </a>
+            <span className="self-center text-xl font-semibold italic whitespace-nowrap dark:text-white">&quot;{shoe.name}&quot;</span>
+            <Link href="/" prefetch={false}>
+              <a href="#" className="flex items-center">
+                  <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Shuez By Cody </span>
+                  <img src="https://flowbite.com/docs/images/logo.svg" className="pl-1 mr-3 h-6 sm:h-10" alt="Flowbite Logo" />
+              </a>
+            </Link>
             </div>
         </nav>
 
