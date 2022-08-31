@@ -17,8 +17,18 @@ export const shoeRouter = createRouter()
     },
   })
   .query("findAll", {
-    async resolve({ ctx }) {
-      return await ctx.prisma.shoe.findMany();
+    input: z.object({
+      limit: z.number(),
+      cursor: z.number().default(0),
+    }),
+    async resolve({ ctx, input }) {
+      const limit = input.limit || 10;
+      const offset = input.cursor || 0;
+      const shoes = await ctx.prisma.shoe.findMany({
+        skip: offset,
+        take: limit,
+      });
+      return { shoes, offset: offset + shoes.length };
     },
   })
   .mutation("create", {

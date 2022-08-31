@@ -1,13 +1,27 @@
+import { useEffect } from 'react';
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
-import styles from '../styles/Home.module.css'
+import { useInView } from "react-intersection-observer";
+import {   QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Link from "next/link";
 
-
-
+const queryClient = new QueryClient();
 const Home: NextPage = () => {
-  const { data: shoes, isLoading } = trpc.useQuery(["shoe.findAll"]);
+  const { ref, inView } = useInView();
+
+  const { data, isLoading, fetchNextPage, } = trpc.useInfiniteQuery(["shoe.findAll", {limit: 3}],    {
+    getNextPageParam: (lastPage) => lastPage.offset,
+  },);
+  // const { shoes } = data?.pages.response;
+  // console.log(data)
+  const shoes = data?.pages.flatMap(page => page.shoes);
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView,fetchNextPage]);
 
   if(isLoading || !shoes) {
     return <div>Loading...</div>
@@ -45,17 +59,27 @@ const Home: NextPage = () => {
         <div className="p-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-8">
             {shoes.map(shoe => 
-              <div key={shoe.id} className="p-4 rounded-md flex items-center justify-center">
-                <a className="h-full" href={`/sneakz/${shoe.styleColor}`}><img className="mx-auto rounded-lg max-w-sm lg:max-w-xs h-full object-cover" src={shoe.image} alt="user avatar" loading="lazy" /></a>
+              <div key={shoe?.id} className="p-4 rounded-md flex items-center justify-center">
+                <a className="h-full" href={`/sneakz/${shoe?.styleColor}`}><img className="mx-auto rounded-lg max-w-sm lg:max-w-xs h-full object-cover" src={shoe?.image} alt="user avatar" loading="lazy" /></a>
               </div>
             )}
           </div>
+          <div ref={ref}></div>
         </div>
       </main>
-    </>
+      </>
   );
 };
 
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+        <Home />
+    </QueryClientProvider>
+  );
+}
+
+export default App;
 
 
-export default Home;
+// export default Home;
