@@ -1,16 +1,23 @@
-import type { NextPage } from "next";
+import type { GetServerSidePropsContext } from "next";
 import Head from "next/head";
-import { trpc } from "../../utils/trpc";
-import { useRouter } from 'next/router';
+import { loadShoe } from "../../server/shoe";
 import Link from "next/link";
 
-const ShoeDetail: NextPage = () => {
-  const router = useRouter();
-  const { styleColor } = router.query;
-  const { data: shoe, isLoading } = trpc.useQuery(["shoe.findOne", { styleColor: styleColor as string }]);
+export async function getServerSideProps({ params }: GetServerSidePropsContext) {
+  const shoe = await loadShoe({ styleColor: params?.styleColor as string });
+  return {
+      props: { shoe: {...shoe, price: shoe?.price.toString() } }
+  }
+}
 
-  if (isLoading || !shoe) return <div>Loading</div>
+interface ShoeDetails {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+}
 
+export default function ShoeDetail({ shoe }: {shoe: ShoeDetails}) {
   return (
     <>
       <Head>
@@ -70,7 +77,4 @@ const ShoeDetail: NextPage = () => {
       </main>
     </>
   );
-};
-
-
-export default ShoeDetail;
+}
